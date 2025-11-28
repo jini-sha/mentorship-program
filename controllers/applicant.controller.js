@@ -13,7 +13,7 @@ exports.createApplicant = asyncHandler(async (req, res, next) => {
         return next(err);
     }
 
-    const { name, email,contactNumber,level,course, interestedField, reason } = validated.data;
+    const { name, email, contactNumber, level, course, interestedField, reason } = validated.data;
 
     const department = await Department.findOne({ subject: interestedField, archived: false });
     if (!department) {
@@ -30,7 +30,7 @@ exports.createApplicant = asyncHandler(async (req, res, next) => {
     }
 
     const applicant = await Applicant.create({
-        departmentId: department._id,
+        careerId: department._id,
         name,
         email,
         contactNumber,
@@ -50,7 +50,7 @@ exports.createApplicant = asyncHandler(async (req, res, next) => {
 });
 
 exports.getApplicants = asyncHandler(async (req, res, next) => {
-    const { status, level, course } = req.query; 
+    const { status, level, course } = req.query;
     const departmentField = req.params.department;
 
     const departments = await Department.find({ subject: departmentField, archived: false });
@@ -62,7 +62,7 @@ exports.getApplicants = asyncHandler(async (req, res, next) => {
 
     const departmentIds = departments.map(d => d._id);
 
-    let filter = { departmentId: { $in: departmentIds } };
+    let filter = { careerId: { $in: departmentIds } };
     if (status) filter.status = status;
     if (level) filter.level = level;
     if (course) filter.course = course;

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const ApplicantSchema = new mongoose.Schema({
-  departmentId: {
+  careerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Department",
     required: true
@@ -20,7 +20,7 @@ const ApplicantSchema = new mongoose.Schema({
     enum: ["Backend", "Frontend", "Designing"]
   },
   level: { type: String, enum: ["4", "5", "6"] },
-  course:{type:String,enum:["BCS","BCY","BIBM"]},
+  course: { type: String, enum: ["BCS", "BCY", "BIBM"] },
   reason: { type: String, required: true, trim: true },
   appliedDate: { type: Date, default: Date.now },
   status: {

@@ -41,10 +41,16 @@ exports.updateDepartment = asyncHandler(async (req, res, next) => {
 });
 
 exports.getDepartments = asyncHandler(async (req, res) => {
-    const { subject } = req.query;
+    const { subject, archived } = req.query;
     let filter = {};
     if (subject && ["Backend", "Frontend", "Designing"].includes(subject)) filter.subject = subject;
-
+    if (!archived) {
+        filter.archived = false;
+    } else if (archived === "true") {
+        filter.archived = true;
+    } else if (archived === "false") {
+        filter.archived = false;
+    }
     const departments = await Department.find(filter).sort({ deadline: 1 });
     res.status(StatusCodes.OK).json({
         success: true,
@@ -58,9 +64,11 @@ exports.getDepartmentById = asyncHandler(async (req, res) => {
     const department = await Department.findById(req.params.id);
     if (!department) return res.status(StatusCodes.NOT_FOUND).json({ message: "Department not found" });
 
-    res.status(StatusCodes.OK).json({ success: true,
-        message:"Department Retrieved.",
-         data: department });
+    res.status(StatusCodes.OK).json({
+        success: true,
+        message: "Department Retrieved.",
+        data: department
+    });
 });
 
 exports.deleteDepartment = asyncHandler(async (req, res) => {
@@ -69,7 +77,8 @@ exports.deleteDepartment = asyncHandler(async (req, res) => {
 
     res.status(StatusCodes.OK).json({
         success: true,
-         message: "Department deleted successfully" });
+        message: "Department deleted successfully"
+    });
 });
 
 exports.archiveDepartment = asyncHandler(async (req, res) => {
@@ -82,6 +91,7 @@ exports.archiveDepartment = asyncHandler(async (req, res) => {
 
     res.status(StatusCodes.OK).json({
         success: true,
-        message:"Archived Successfully.",
-        data: department });
+        message: "Archived Successfully.",
+        data: department
+    });
 });

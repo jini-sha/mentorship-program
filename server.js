@@ -5,7 +5,9 @@ const app = require('./app');
 const connectDB = require('./utils/db');
 const mainRouter = require('./routers/index.routes')
 const errorMiddleware = require('./middlewares/error.middleware');
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:8000"
+}))
 app.use(errorMiddleware);
 app.use('/api', mainRouter);
 connectDB()
